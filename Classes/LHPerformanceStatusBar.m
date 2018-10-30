@@ -22,7 +22,7 @@
     return @[_fpsLabel,_memoryLabel,_cpuLabel];
 }
 - (void)setup{
-    self.backgroundColor = [UIColor whiteColor];
+    self.backgroundColor = [UIColor clearColor];
     _fpsLabel = [[LHPerformanceLabel alloc] initWithFrame:CGRectZero];
     _fpsLabel.font = [UIFont systemFontOfSize:10];
     _fpsLabel.textColor = [UIColor whiteColor];
@@ -45,7 +45,7 @@
     [self addSubview:_cpuLabel];
     
     //Layout
-    NSDictionary * subviews = NSDictionaryOfVariableBindings(_fpsLabel,_memoryLabel,_cpuLabel);
+    NSDictionary * subviews = NSDictionaryOfVariableBindings(_fpsLabel,_cpuLabel,_memoryLabel);
     //CenterY
     for (UIView * label in subviews.allValues) {
         [self addConstraint:[NSLayoutConstraint constraintWithItem:label
@@ -57,8 +57,8 @@
                                                           constant:0]];
     }
     //CenterX
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:_memoryLabel attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[_fpsLabel]-8-[_memoryLabel]-8-[_cpuLabel]" options:0 metrics:nil views:subviews]];
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:_cpuLabel attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[_fpsLabel]-8-[_cpuLabel]-8-[_memoryLabel]" options:0 metrics:nil views:subviews]];
 }
 
 @end
