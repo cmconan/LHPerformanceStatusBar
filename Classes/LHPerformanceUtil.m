@@ -1,6 +1,6 @@
 //
 //  QTPerformanceUtil.m
-//  
+//
 //
 //  Created by Leo on 2016/12/26.
 //  Copyright © 2016年 Leo. All rights reserved.
@@ -12,9 +12,25 @@
 @implementation LHPerformanceUtil
 
 + (CGFloat)usedMemoryInMB{
-    vm_size_t memory = usedMemory();
-    return memory / 1000.0 / 1000.0;
+    int64_t memory = memoryUsage();
+    return memory / 1024.0 / 1024.0;
 }
+
+
+int64_t memoryUsage() {
+    int64_t memoryUsageInByte = 0;
+    task_vm_info_data_t vmInfo;
+    mach_msg_type_number_t count = TASK_VM_INFO_COUNT;
+    kern_return_t kernelReturn = task_info(mach_task_self(), TASK_VM_INFO, (task_info_t) &vmInfo, &count);
+    if(kernelReturn == KERN_SUCCESS) {
+        memoryUsageInByte = (int64_t) vmInfo.phys_footprint;
+        //        NSLog(@"Memory in use (in bytes): %lld", memoryUsageInByte);
+    } else {
+        //        NSLog(@"Error with task_info(): %s", mach_error_string(kernelReturn));
+    }
+    return memoryUsageInByte;
+}
+
 
 + (CGFloat)cpuUsage{
     float cpu = cpu_usage();
